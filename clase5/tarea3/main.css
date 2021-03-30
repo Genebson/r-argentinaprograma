@@ -1,0 +1,30 @@
+body {
+  background-color: mediumslateblue;
+  color: white;
+}
+h1 {
+  text-align: center;
+  color: white;
+}
+h3 {
+  color: white;
+}
+.formulario {
+ text-align: center;
+}
+.btn-cargar {
+  background-color: #008CBA;
+  border: none;
+  color: white;
+  text-decoration: none;
+  font-size: 2em;
+  padding: 15px 32px;  
+  margin-top: 1em;
+}
+li {
+  list-style-type: none;
+  font-size: 3em;
+}
+.lista4 {
+ text-align: center;
+}
