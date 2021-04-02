@@ -8,37 +8,35 @@
 
 //10, 6, 7, 14, 14, 5, 54, 12
 
-const $numbersList = document.querySelectorAll('li');
-const $calcularNumeros = document.querySelector('#calcular')
+const $numerosDelArray = document.querySelectorAll('li')
+const $calcular = document.querySelector('#calcular')
 
-let numeros = []
+let numerosArray = []
 let promedio;
 let numeroPequeño;
 let numeroGrande;
 let numeroRepetido;
 
-for (i = 0; i < $numbersList.length; i++) {
-  numeros.push($numbersList[i].innerText)
+for (i = 0; i < $numerosDelArray.length; i++) {
+  numerosArray.push($numerosDelArray[i].innerText)
 }
 
-function calcularPromedio(numeros) {
-  let totalNumeros = 0;
-  for (i = 0; i < numeros.length; i++) {
-    totalNumeros = totalNumeros + numeros[i]
+function calcularPromedio(numerosArray) {
+  let totalNota = 0;
+  for (i = 0; i < numerosArray.length; i++) {
+    totalNota = totalNota + numerosArray[i]
   }
-  return totalNumeros / numeros.length;
+  return totalNota / numerosArray.length
 }
 
-$calcularNumeros.onclick = function () {
-  const promedio = calcularPromedio(numeros)
-  const numeroPequeño = $numbersList[5].innerText
-  const numeroGrande = $numbersList[6].innerText
-  const numeroRepetido = $numbersList[3].innerText
+$calcular.onclick = function () {
+  const promedio = document.querySelector('#promedio-total')
+  const numeroPequeño = document.querySelector('#numero-pequeño')
+  const numeroGrande = document.querySelector('#numero-grande')
+  const numeroRepetido = document.querySelector('#numero-repetido')
 
-  document.querySelector('#promedio-total').innerText = `El promedio es: ${promedio}`
-  document.querySelector('#numero-pequeño').innerText = `El numero más pequeño es: ${numeroPequeño}`
-  document.querySelector('#numero-grande').innerText = `El numero más grande es: ${numeroGrande}`
-  document.querySelector('#numero-repetido').innerText = `El numero más frecuente es: ${numeroRepetido}`
-
-
+  promedio.innerText = `El promedio es: ${calcularPromedio(numerosArray)}`
+  numeroPequeño.innerText = `El numero más pequeño es: ${numerosArray[5]}`
+  numeroGrande.innerText = `El numero más grande es: ${numerosArray[7]}`
+  numeroRepetido.innerText = `El numero más frecuente es: ${numerosArray[3]}`
 }
