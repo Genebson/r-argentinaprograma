@@ -6,40 +6,38 @@
 // al apretar el botón "Calcular tiempo total", debe mostrar en un
 // <strong> pre-creado el tiempo total de los videos.
 
-const $botonCalcularClases = document.querySelector('#cargar-datos');
-
-let horasTemporales;
-let minutosTemporales;
-let segundosTemporales;
+let horasParciales;
+let minutosParciales;
+let segundosParciales;
 
 let horasConvertidas;
 let minutosConvertidos;
 let segundosConvertidos;
 
 function sumaTotal(tiempoParcial) {
-  let acumulador = 0;
+  let counter = 0;
   for (i = 0; i < tiempoParcial.length; i++) {
-    acumulador += Number(tiempoParcial[i].value);
+    counter += Number(tiempoParcial[i].value)
   }
-  return acumulador;
+  return counter
 }
 
 function excedente(tiempoTotal) {
-  let excedente = (tiempoTotal % 60);
-  return excedente;
+  let excedente = (tiempoTotal % 60)
+  return excedente
 }
 
 function convertirNumeros(tiempoTotal) {
   let convertir = parseInt(tiempoTotal / 60)
-  return convertir;
+  return convertir
 }
 
 function calcularTotal(excedente, convertidos) {
-  let totales = excedente + convertidos;
-  return totales;
+  let total = excedente + convertidos
+  return total
 }
 
-function minutosySegundos() {
+function minutosYSegundos() {
   if (segundosConvertidos >= 60) {
     segundosConvertidos -= 60
     minutosConvertidos += 1
@@ -50,22 +48,45 @@ function minutosySegundos() {
   }
 }
 
-$botonCalcularClases.onclick = function () {
-  const horasDelVideo = document.querySelectorAll('.horas');
-  const minutosDelVideo = document.querySelectorAll('.minutos');
-  const segundosDelVideo = document.querySelectorAll('.segundos');
+const $cargarDatos = document.querySelector('#cargar-datos');
 
-  segundosTemporales = sumaTotal(segundosDelVideo);
-  minutosTemporales = sumaTotal(minutosDelVideo);
-  horasTemporales = sumaTotal(horasDelVideo);
+$cargarDatos.onclick = function () {
+  const horasDeLasClases = document.querySelectorAll('.horas')
+  const minutosDeLasClases = document.querySelectorAll('.minutos')
+  const segundosDeLasClases = document.querySelectorAll('.segundos')
 
-  segundosConvertidos = excedente(segundosTemporales);
-  minutosConvertidos = calcularTotal(excedente(minutosTemporales), convertirNumeros(segundosTemporales));
-  horasConvertidas = calcularTotal(horasTemporales, convertirNumeros(minutosTemporales));
+  horasParciales = sumaTotal(horasDeLasClases)
+  minutosParciales = sumaTotal(minutosDeLasClases)
+  segundosParciales = sumaTotal(segundosDeLasClases)
 
-  minutosySegundos()
+  horasConvertidas = calcularTotal(horasParciales, convertirNumeros(minutosParciales))
+  minutosConvertidos = calcularTotal(excedente(minutosParciales), convertirNumeros(segundosParciales))
+  segundosConvertidos = excedente(segundosParciales)
 
-  document.querySelector('#tiempo-total').innerText = `El tiempo total es de: ${horasConvertidas} horas ${minutosConvertidos} minutos y ${segundosConvertidos} segundos.`;
+  minutosYSegundos()
 
-  return false;
+  const tiempoTotal = document.querySelector('#tiempo-total')
+
+  tiempoTotal.innerText = `El tiempo total es de: ${horasConvertidas} horas ${minutosConvertidos} minutos y ${segundosConvertidos} segundos.`
+
 }
+
+// $botonCalcularClases.onclick = function () {
+//   const horasDelVideo = document.querySelectorAll('.horas');
+//   const minutosDelVideo = document.querySelectorAll('.minutos');
+//   const segundosDelVideo = document.querySelectorAll('.segundos');
+
+//   segundosTemporales = sumaTotal(segundosDelVideo);
+//   minutosTemporales = sumaTotal(minutosDelVideo);
+//   horasTemporales = sumaTotal(horasDelVideo);
+
+//   segundosConvertidos = excedente(segundosTemporales);
+//   minutosConvertidos = calcularTotal(excedente(minutosTemporales), convertirNumeros(segundosTemporales));
+//   horasConvertidas = calcularTotal(horasTemporales, convertirNumeros(minutosTemporales));
+
+//   minutosySegundos()
+
+//   document.querySelector('#tiempo-total').innerText = `El tiempo total es de: ${horasConvertidas} horas ${minutosConvertidos} minutos y ${segundosConvertidos} segundos.`;
+
+//   return false;
+// }
