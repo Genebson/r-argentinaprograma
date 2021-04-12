@@ -1,0 +1,36 @@
+body {
+  background-color: mediumslateblue;
+  color: white;
+}
+h1 {
+  text-align: center;
+  color: white;
+}
+h3 {
+  color: white;
+}
+.formulario {
+  text-align: center;
+}
+.btn-cargar {
+  background-color: #008CBA;
+  border: none;
+  color: white;
+  text-decoration: none;
+  font-size: 2em;
+  padding: 15px 32px;  
+  margin-top: 1em;
+}
+
+.container-btns {
+  text-align: center;
+}
+
+.formulario .btn-cargar {
+  padding: 5px;
+  font-size: 1em;
+}
+
+.oculto {
+  display: none;
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="main.css">
+  <title>Clase 6 - Tarea 1</title>
+</head>
+
+<body>
+  <form class="formulario">
+    <label for="cantidad-integrantes">Ingrese la cantidad de Integrantes</label>
+    <input type="number" id="cantidad-integrantes">
+    <button type="submit" class="btn-cargar" id="ingresar-integrantes">Ingresar</button>
+
+    <div id="integrantes"></div>
+    <div id="edad-integrantes"></div>
+
+
+    <div id="resultado" class="oculto">
+      <p>El integrante con más edad tiene:</p>
+      <p>El integrante con menos edad tiene:</p>
+      <p>El promedio total de las edades es:</p>
+    </div>
+    <div class="container-btns">
+      <button class="btn-cargar oculto" id="resetear-integrantes">Resetear</button>
+      <button class="btn-cargar oculto" id="calcular-integrantes">Calcular</button>
+      <button class="btn-cargar oculto" id="siguiente-paso">Siguiente</button>
+    </div>
+  </form>
+  <script src="calculos.js"></script>
+  <script src="tarea1.js"></script>
+</body>
+
+</html>
