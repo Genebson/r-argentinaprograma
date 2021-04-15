@@ -25,5 +25,3 @@ function obtenerPromedioTotal(edades) {
   }
   return totalNota / edades.length;
 }
-
-console.log(`Menor: ${obtenerNumeroMenor(edades)} \nMayor: ${obtenerNumeroMayor(edades)} \nPromedio: ${obtenerPromedioTotal(edades)}`);
