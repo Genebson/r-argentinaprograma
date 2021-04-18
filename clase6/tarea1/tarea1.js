@@ -100,8 +100,8 @@ function borrarDatos() {
   const $nombresDeLosIntegrantes = document.querySelectorAll('.integrante-nombre')
   const $edadesDeLosIntegrantes = document.querySelectorAll('.integrante-edad')
   const $cantidadIntegrantes = document.querySelector('#cantidad-integrantes')
-
   $cantidadIntegrantes.value.remove()
+
   for (let i = 0; i < $nombresDeLosIntegrantes.length; i++) {
     $nombresDeLosIntegrantes[i].remove()
   }
