@@ -16,25 +16,24 @@ const $divResultado = document.querySelector('#resultado')
 let inputsNombres = 0;
 let inputsEdad = 0;
 
-
 $botonIngresar.onclick = function () {
-  $botonSiguiente.style.display = 'inline'
+  mostrarBotonSiguiente()
   nombresDeLosIntegrantes()
   return false;
 }
 
 $botonSiguiente.onclick = function () {
-  $botonSiguiente.style.display = 'inline'
-  $botonCalcular.style.display = 'inline'
-  $botonResetear.style.display = 'inline'
-  $botonSiguiente.style.display = 'none'
+  ocultarBotonSiguiente()
+  mostrarBotonCalcular()
+  mostrarBotonResetear()
   edadDeLosIntegrantes()
   return false;
 }
 
 $botonCalcular.onclick = function () {
-  $botonSiguiente.style.display = 'none'
-  $divResultado.classList.remove('oculto')
+  ocultarBotonSiguiente()
+  ocultarBotonCalcular()
+  mostrarResultado()
   const edades = calcularIntegrantes()
 
   const $integranteMayor = document.querySelector('#integrante-mayor')
@@ -49,11 +48,7 @@ $botonCalcular.onclick = function () {
 }
 
 $botonResetear.onclick = function () {
-  const $cantidadIntegrantes = document.querySelector('#cantidad-integrantes')
-  const $containerFormulario = document.querySelector('#container-datos')
-  const padreContainer = $containerFormulario.parentNode
-  padreContainer.removeChild($containerFormulario)
-  $cantidadIntegrantes.value = "";
+  resetear()
   return false;
 }
 
@@ -62,12 +57,19 @@ function nombresDeLosIntegrantes() {
   const $divIntegrantes = document.querySelector('#integrantes')
 
   for (let i = inputsNombres; i < $cantidadIntegrantes; i++) {
-    const $inputNombres = document.createElement('input')
-    $divIntegrantes.appendChild(document.createTextNode('Nombre del integrante ' + (i + 1) + ': '))
-    $inputNombres.type = 'text'
-    $inputNombres.className = 'nombres-integrantes'
-    $divIntegrantes.appendChild($inputNombres)
-    $divIntegrantes.appendChild(document.createElement('br'))
+    const $div = document.createElement('div')
+    $div.className = 'integrante-nombre'
+
+    const $label = document.createElement('label')
+    $label.textContent = 'Nombre del integrante ' + (i + 1) + ': '
+    const $input = document.createElement('input')
+    $input.type = 'text'
+    $input.className = 'nombres-integrantes'
+
+    $div.appendChild($label)
+    $div.appendChild($input)
+    $div.appendChild(document.createElement('br'))
+    $divIntegrantes.appendChild($div)
     inputsNombres++
   }
 }
@@ -77,13 +79,34 @@ function edadDeLosIntegrantes() {
   const $divEdadIntegrantes = document.querySelector('#edad-integrantes')
 
   for (let i = inputsEdad; i < $nombresInput.length; i++) {
-    const $inputEdades = document.createElement('input')
-    $divEdadIntegrantes.appendChild(document.createTextNode('Edad de ' + ($nombresInput[i].value) + ': '))
-    $inputEdades.type = 'number'
-    $inputEdades.className = 'edad-integrantes'
-    $divEdadIntegrantes.appendChild($inputEdades)
-    $divEdadIntegrantes.appendChild(document.createElement('br'))
+    const $div = document.createElement('div')
+    $div.className = 'integrante-edad'
+
+    const $label = document.createElement('label')
+    $label.textContent = `Ingrese la edad de ${$nombresInput[i].value.charAt(0).toUpperCase()}${$nombresInput[i].value.slice(1).toLowerCase()} :`
+    const $input = document.createElement('input')
+    $input.type = 'number'
+    $input.className = 'edad-integrantes'
+
+    $div.appendChild($label)
+    $div.appendChild($input)
+    $div.appendChild(document.createElement('br'))
+    $divEdadIntegrantes.appendChild($div)
     inputsEdad++
+  }
+}
+
+function borrarDatos() {
+  const $nombresDeLosIntegrantes = document.querySelectorAll('.integrante-nombre')
+  const $edadesDeLosIntegrantes = document.querySelectorAll('.integrante-edad')
+  const $cantidadIntegrantes = document.querySelector('#cantidad-integrantes')
+
+  $cantidadIntegrantes.value.remove()
+  for (let i = 0; i < $nombresDeLosIntegrantes.length; i++) {
+    $nombresDeLosIntegrantes[i].remove()
+  }
+  for (let i = 0; i < $edadesDeLosIntegrantes.length; i++) {
+    $edadesDeLosIntegrantes[i].remove()
   }
 }
 
@@ -94,4 +117,43 @@ function calcularIntegrantes() {
     edadesArr.push(Number($edadesInput[i].value))
   }
   return edadesArr
+}
+
+function ocultarBotonCalcular() {
+  document.querySelector('#calcular-integrantes').className = 'btn-cargar oculto'
+}
+
+function mostrarBotonCalcular() {
+  document.querySelector('#calcular-integrantes').className = 'btn-cargar'
+}
+
+function ocultarBotonSiguiente() {
+  document.querySelector('#siguiente-paso').className = 'oculto'
+}
+
+function mostrarBotonSiguiente() {
+  document.querySelector('#siguiente-paso').className = 'btn-cargar'
+}
+
+function ocultarResultado() {
+  document.querySelector('#resultado').className = 'oculto'
+}
+
+function mostrarResultado() {
+  document.querySelector('#resultado').className = ''
+}
+
+function ocultarBotonResetear() {
+  document.querySelector('#resetear-integrantes').className = 'btn-cargar oculto'
+}
+
+function mostrarBotonResetear() {
+  document.querySelector('#resetear-integrantes').className = 'btn-cargar'
+}
+
+function resetear() {
+  borrarDatos()
+  ocultarBotonCalcular()
+  ocultarResultado()
+  ocultarBotonResetear()
 }
