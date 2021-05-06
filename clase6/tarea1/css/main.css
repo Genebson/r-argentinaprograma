@@ -26,9 +26,27 @@ h3 {
   text-align: center;
 }
 
+.error {
+    border: 2px solid red;
+}
+
+#exito {
+    margin-top: 30px;
+}
+
+#exito strong {
+    display: block;
+    margin: 23px;
+    font-size: 30px;
+}
+
 .formulario .btn-cargar {
   padding: 5px;
   font-size: 1em;
+}
+
+#errores li {
+  list-style-type: none;
 }
 
 .oculto {

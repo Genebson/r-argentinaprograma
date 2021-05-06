@@ -1,12 +1,5 @@
-/*
-TAREA: Empezar preguntando cuánta gente hay en el grupo familiar.
-Crear tantos inputs+labels como gente haya para completar la edad de cada integrante.
-Al hacer click en "calcular", mostrar en un elemento pre-existente la mayor edad,
-la menor edad y el promedio del grupo familiar.
-
-Punto bonus: Crear un botón para "empezar de nuevo" que empiece el proceso nuevamente,
-borrando los inputs ya creados (investigar cómo en MDN).
-*/
+const $form = document.querySelector('#formulario-integrantes')
+// $form.onsubmit = validarForm;
 
 const $botonIngresar = document.querySelector('#ingresar-integrantes')
 const $botonSiguiente = document.querySelector('#siguiente-paso')
@@ -16,9 +9,11 @@ const $divResultado = document.querySelector('#resultado')
 let inputsNombres = 0;
 let inputsEdad = 0;
 
-$botonIngresar.onclick = function () {
+$botonIngresar.onclick = function (e) {
+  e.preventDefault()
   mostrarBotonSiguiente()
   nombresDeLosIntegrantes()
+  errorIntegrantes()
   return false;
 }
 
@@ -27,29 +22,93 @@ $botonSiguiente.onclick = function () {
   mostrarBotonCalcular()
   mostrarBotonResetear()
   edadDeLosIntegrantes()
+  errorNombres()
   return false;
 }
 
-$botonCalcular.onclick = function () {
+$botonCalcular.onclick = function (e) {
+  e.preventDefault()
   ocultarBotonSiguiente()
   ocultarBotonCalcular()
   mostrarResultado()
+  errorEdades()
   const edades = calcularIntegrantes()
 
-  const $integranteMayor = document.querySelector('#integrante-mayor')
-  const $integranteMenor = document.querySelector('#integrante-menor')
-  const $promedioIntegrantes = document.querySelector('#promedio-integrantes')
+  const exito = manejarErrores(errores) === 0;
+  if (exito) {
+    const $integranteMayor = document.querySelector('#integrante-mayor')
+    const $integranteMenor = document.querySelector('#integrante-menor')
+    const $promedioIntegrantes = document.querySelector('#promedio-integrantes')
 
-  $integranteMayor.innerText = `El integrante con más edad tiene: ${obtenerNumeroMayor(edades)}`
-  $integranteMenor.innerText = `El integrante con menos edad tiene: ${obtenerNumeroMenor(edades)}`
-  $promedioIntegrantes.innerText = `El promedio de los integrantes es: ${obtenerPromedioTotal(edades)}`
+    $integranteMayor.innerText = `El integrante con más edad tiene: ${obtenerNumeroMayor(edades)}`
+    $integranteMenor.innerText = `El integrante con menos edad tiene: ${obtenerNumeroMenor(edades)}`
+    $promedioIntegrantes.innerText = `El promedio de los integrantes es: ${obtenerPromedioTotal(edades)}`
+  }
+}
 
+$botonResetear.onclick = function (e) {
+  e.preventDefault()
+
+  inputsNombres = 0
+  inputsEdad = 0
+  resetear()
   return false;
 }
 
-$botonResetear.onclick = function () {
-  resetear()
-  return false;
+function errorIntegrantes() {
+  const $form = document.querySelector('#formulario-integrantes')
+
+  const integrantes = $form.integrantes.value
+  const errorIntegrantes = validarCantidadIntegrantes(integrantes)
+  const errores = {
+    integrantes: errorIntegrantes
+  }
+  manejarErrores(errores)
+}
+
+function errorNombres() {
+  const errores = {}
+  const nombreIntegrantes = document.querySelectorAll('.nombres-integrantes')
+
+  for (let i = 0; i < nombreIntegrantes.length; i++) {
+    errores[`campo-${i + 1}`] = validarNombre(nombreIntegrantes[i])
+  }
+  manejarErrores(errores)
+}
+
+function errorEdades() {
+  const errores = {}
+  const edadesIntegrantes = calcularIntegrantes()
+
+  for (let i = 0; i < edadesIntegrantes.length; i++) {
+    errores[`campos-${i + 1}`] = validarEdad(edadesIntegrantes[i])
+    console.log(edadesIntegrantes[i]);
+  }
+  manejarErrores(errores)
+  console.log(manejarErrores(errores));
+}
+
+function manejarErrores(errores) {
+  const keys = Object.keys(errores)
+  const $errores = document.querySelector('#errores')
+  $errores.innerHTML = ''
+
+  let contadorErrores = 0;
+  keys.forEach(function (key) {
+    const error = errores[key]
+
+    if (error) {
+      contadorErrores++
+      $form[key].className = 'error'
+
+      const $error = document.createElement('li')
+      $error.innerText = error
+      $errores.appendChild($error)
+    } else {
+      $form[key].className = ''
+    }
+  });
+  return contadorErrores;
 }
 
 function nombresDeLosIntegrantes() {
@@ -57,6 +116,11 @@ function nombresDeLosIntegrantes() {
   const $divIntegrantes = document.querySelector('#integrantes')
 
   for (let i = inputsNombres; i < $cantidadIntegrantes; i++) {
+    if ($cantidadIntegrantes > 0) {
+      mostrarBotonSiguiente()
+    } else {
+      ocultarBotonSiguiente()
+    }
     const $div = document.createElement('div')
     $div.className = 'integrante-nombre'
 
@@ -64,6 +128,7 @@ function nombresDeLosIntegrantes() {
     $label.textContent = 'Nombre del integrante ' + (i + 1) + ': '
     const $input = document.createElement('input')
     $input.type = 'text'
+    $input.name = `campo-${i + 1}`
     $input.className = 'nombres-integrantes'
 
     $div.appendChild($label)
@@ -83,9 +148,10 @@ function edadDeLosIntegrantes() {
     $div.className = 'integrante-edad'
 
     const $label = document.createElement('label')
-    $label.textContent = `Ingrese la edad de ${$nombresInput[i].value.charAt(0).toUpperCase()}${$nombresInput[i].value.slice(1).toLowerCase()} :`
+    $label.textContent = `Ingrese la edad de ${$nombresInput[i].value}: `
     const $input = document.createElement('input')
     $input.type = 'number'
+    $input.name = `campos-${i + 1}`
     $input.className = 'edad-integrantes'
 
     $div.appendChild($label)
@@ -100,7 +166,9 @@ function borrarDatos() {
   const $nombresDeLosIntegrantes = document.querySelectorAll('.integrante-nombre')
   const $edadesDeLosIntegrantes = document.querySelectorAll('.integrante-edad')
   const $cantidadIntegrantes = document.querySelector('#cantidad-integrantes')
-  $cantidadIntegrantes.value.remove()
+  $cantidadIntegrantes.value = ''
+  const $errores = document.querySelector('#errores')
+  $errores.innerHTML = ''
 
   for (let i = 0; i < $nombresDeLosIntegrantes.length; i++) {
     $nombresDeLosIntegrantes[i].remove()
@@ -118,6 +186,7 @@ function calcularIntegrantes() {
   }
   return edadesArr
 }
+
 
 function ocultarBotonCalcular() {
   document.querySelector('#calcular-integrantes').className = 'btn-cargar oculto'
